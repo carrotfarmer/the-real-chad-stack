@@ -1,12 +1,16 @@
 package callback
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
 	"carrotfarmer/chad-stack/auth"
+	"carrotfarmer/chad-stack/models"
+	"carrotfarmer/chad-stack/models/todo"
+	"carrotfarmer/chad-stack/models/user"
 )
 
 // callback handler
@@ -41,6 +45,30 @@ func Handler(auth *auth.Authenticator) gin.HandlerFunc {
 		if err := session.Save(); err != nil {
 			ctx.String(http.StatusInternalServerError, err.Error())
 			return
+		}
+
+		// extract email from profile variable
+		email := profile["email"].(string)
+
+		// check if user exists in db, else save
+		var dbUser user.User
+
+		res := models.DB.Where(&user.User{
+			Email: email,
+		}).Find(&dbUser)
+		if res.Error != nil {
+			log.Fatalf("error while searching for user in DB: %v", res.Error)
+		}
+
+		if dbUser.Name == "" {
+			models.DB.Create(&user.User{
+				Name:    profile["name"].(string),
+				Picture: profile["picture"].(string),
+				Email:   email,
+				Todos:   []todo.Todo{},
+			})
+
+			log.Print("successfully added user to database")
 		}
 
 		// redirect to logged in page

@@ -5,25 +5,15 @@ import (
 	"net/http"
 
 	"github.com/joho/godotenv"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 
 	"carrotfarmer/chad-stack/auth"
-	"carrotfarmer/chad-stack/models/todo"
-	"carrotfarmer/chad-stack/models/user"
+	"carrotfarmer/chad-stack/models"
 	"carrotfarmer/chad-stack/router"
 )
 
-func initDB() {
-	db, err := gorm.Open(sqlite.Open("deez_nuts.db"), &gorm.Config{})
-	if err != nil {
-		log.Fatalf("failed to open db: %v", err)
-	}
-
-	db.AutoMigrate(&user.User{}, &todo.Todo{})
-}
-
 func main() {
+	models.ConnectDatabase()
+
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("failed to load the env vars: %v", err)
 	}
