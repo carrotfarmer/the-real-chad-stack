@@ -1,6 +1,7 @@
 package user
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -12,5 +13,6 @@ func Handler(ctx *gin.Context) {
 	session := sessions.Default(ctx)
 	profile := session.Get("profile")
 
+	fmt.Println(profile)
 	ctx.HTML(http.StatusOK, "user.html", profile)
 }
