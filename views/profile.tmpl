@@ -1,11 +1,38 @@
-<html>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="/public/js/js.cookie.js"></script>
-<script src="/public/js/user.js"> </script>
-<div>
-	<img class="avatar" src="{{ .picture }}" />
-	<h2>welcome {{.nickname}}</h2>
-	<a id="btn-logout" class="btn-logout" href="/logout">logout</a>
-</div>
+<!DOCTYPE html>
 
-</html>
+<head>
+	<meta charset='UTF-8'>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ma profile - TheChadWebApp</title>
+	<script src="https://unpkg.com/htmx.org@1.9.4"></script>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="/public/js/user.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+</head>
+
+<body class="bg-gray-900">
+	<h1 class="flex justify-center text-4xl pt-5 font-extrabold text-white">
+		TheChadWebApp
+	</h1>
+	<div class="flex justify-center pt-5">
+		<img src="{{ .picture }}" referrerpolicy="no-referrer" class="inline-block h-36 w-36 rounded-full" />
+	</div>
+	<div class="flex justify-center pt-5 text-white text-bold text-xl">
+		my email: <p class="text-gray-300 font-extrabold pl-3">{{ .email }}</p>
+	</div>
+	<div class="flex justify-center pt-2 text-white text-bold text-xl">
+		my name: <p class="text-gray-300 font-extrabold pl-3">{{ .name }}</p>
+	</div>
+
+	<div class="flex justify-center pt-3 gap-10">
+		<a href="/logout" class="p-3 flex justify-center bg-white text-black hover:bg-gray-300 rounded-xl w-48 btn-logout"
+			id="btn-logout">
+			log out
+		</a>
+
+		<a href="/"
+			class="p-3 flex justify-center bg-gray-900 text-black hover:bg-gray-800 rounded-xl w-48 btn-logout text-white border-gray-600 border-2">
+			go home
+		</a>
+	</div>
+</body>
