@@ -19,10 +19,17 @@ func ConnectDatabase() {
 		panic("Failed to connect to database!")
 	}
 
-	err = database.AutoMigrate(&user.User{}, &todo.Todo{})
+	err = database.AutoMigrate(&user.User{})
 	if err != nil {
 		log.Fatalf("ERROR: database migration failed: %v", err)
 	}
+
+	err = database.AutoMigrate(&todo.Todo{})
+	if err != nil {
+		log.Fatalf("ERROR: database migration failed: %v", err)
+	}
+
+	database.Model(&user.User{}).Association("Todos").Append([]todo.Todo{})
 
 	DB = database
 }

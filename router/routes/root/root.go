@@ -1,7 +1,6 @@
 package root
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -22,12 +21,7 @@ func Handler(ctx *gin.Context) {
 	mProfile := profile.(map[string]interface{})
 	var dbUser []user.User
 
-	res := models.DB.Where(&user.User{
-		Email: mProfile["email"].(string),
-	}).Find(&dbUser)
-	if res.Error != nil {
-		log.Printf("ERROR: could not find user for todos: %v", res.Error)
-	}
+	models.DB.Model(&user.User{}).Where("email = ?", mProfile["email"].(string)).Preload("Todos").Find(&dbUser)
 
 	ctx.HTML(http.StatusOK, "index.tmpl", dbUser[0])
 }

@@ -16,7 +16,9 @@
 </div>
 
 <div class="pt-5 text-white flex justify-center">
-	{{ range .Todos }}
-	{{ .Text }}
-	{{ end }}
+	{{range .}}
+	<p class="pt-2">
+		{{.Text}}
+	</p>
+	{{end}}
 </div>

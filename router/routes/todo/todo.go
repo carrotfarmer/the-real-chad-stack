@@ -4,7 +4,7 @@ import (
 	"carrotfarmer/chad-stack/models"
 	"carrotfarmer/chad-stack/models/todo"
 	"carrotfarmer/chad-stack/models/user"
-	"fmt"
+	"log"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -16,29 +16,15 @@ func CreateTodoHandler(ctx *gin.Context) {
 	// haha cry about it
 	email := sessions.Default(ctx).Get("profile").(map[string]interface{})["email"].(string)
 
-	models.DB.Model(&user.User{}).Where("email = ?", email).Find(&dbUser)
+	models.DB.Model(&user.User{}).Where("email = ?", email).First(&dbUser)
 
-	fmt.Println("the value should be below this:")
-	fmt.Println(ctx.Request.FormValue("todo_text"))
-
-	// create a new todos array with new todo
-	// newTodos := append(dbUser.Todos, todo.Todo{
-	// 	Text:       ctx.Request.FormValue("todo_text"),
-	// 	IsComplete: false,
-	// })
-
-	// update todos array in user
-	// res := models.DB.Model(&user.User{}).Where("email = ?", email).UpdateColumn("todos", newTodos)
-	// if res.Error != nil {
-	// 	log.Fatalf("ERROR: could not create todo: %v", res.Error)
-	// 	ctx.JSON(http.StatusInternalServerError, gin.H{
-	// 		"error": res.Error,
-	// 	})
-	// }
-
-	models.DB.Model(&user.User{}).Where("email = ?", email).Association("Todos").Append(&todo.Todo{
+	newTodo := todo.Todo{
 		Text:       ctx.Request.FormValue("todo_text"),
 		IsComplete: false,
-		UserId:     dbUser.ID,
-	})
+		UserID:     dbUser.ID,
+	}
+
+	if err := models.DB.Create(&newTodo).Error; err != nil {
+		log.Fatalf("ERROR: could not create todo: %v", err)
+	}
 }
