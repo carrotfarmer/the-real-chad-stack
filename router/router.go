@@ -36,10 +36,10 @@ func New(auth *auth.Authenticator) *gin.Engine {
 
 	router.Group("/todo", middleware.IsAuthenticated)
 	{
-		router.GET("/")
-		router.GET("/:id")
-		router.POST("/", todo_handler.CreateTodoHandler)
-		router.PATCH("/")
+		router.GET("/todo")
+		router.GET("/todo/:id")
+		router.POST("/todo/create", todo_handler.CreateTodoHandler)
+		router.PATCH("/todo/toggle")
 	}
 
 	return router

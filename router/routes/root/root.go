@@ -13,7 +13,12 @@ import (
 
 // this is the root handler
 func Handler(ctx *gin.Context) {
+	if sessions.Default(ctx).Get("profile") == nil {
+		ctx.HTML(http.StatusOK, "index.tmpl", nil)
+	}
+
 	profile := sessions.Default(ctx).Get("profile")
+
 	mProfile := profile.(map[string]interface{})
 	var dbUser []user.User
 

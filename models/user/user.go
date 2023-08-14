@@ -11,5 +11,5 @@ type User struct {
 	Name    string
 	Picture string
 	Email   string
-	Todos   []todo.Todo
+	Todos   []todo.Todo `json:"todos"`
 }
