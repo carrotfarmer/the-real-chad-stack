@@ -14,6 +14,7 @@ import (
 	"carrotfarmer/chad-stack/router/routes/logout"
 	"carrotfarmer/chad-stack/router/routes/profile"
 	"carrotfarmer/chad-stack/router/routes/root"
+	todo_handler "carrotfarmer/chad-stack/router/routes/todo"
 )
 
 func New(auth *auth.Authenticator) *gin.Engine {
@@ -32,6 +33,14 @@ func New(auth *auth.Authenticator) *gin.Engine {
 	router.GET("/callback", callback.Handler(auth))
 	router.GET("/profile", middleware.IsAuthenticated, profile.Handler)
 	router.GET("/logout", logout.Handler)
+
+	router.Group("/todo", middleware.IsAuthenticated)
+	{
+		router.GET("/")
+		router.GET("/:id")
+		router.POST("/", todo_handler.CreateTodoHandler)
+		router.PATCH("/")
+	}
 
 	return router
 }

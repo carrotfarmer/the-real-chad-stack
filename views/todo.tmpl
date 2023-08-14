@@ -3,10 +3,13 @@
 </h2>
 
 <div class="pt-5 flex justify-center gap-5">
-	<input placeholder="become a chad"
-		class="p-5 rounded-xl w-96 bg-gray-700 text-white ring-sky-500 focus:ring-1 focus:outline-none focus:ring text-lg font-bold" />
-	<button
-		class="bg-sky-500 hover:bg-sky-600 p-5 rounded-xl text-white font-bold focus:outline-none ring-blue-900 focus:ring-4">
-		add todo
-	</button>
+	<form hx-post="/todo">
+		<input placeholder="become a chad"
+			class="p-5 rounded-xl w-96 bg-gray-700 text-white ring-sky-500 focus:ring-1 focus:outline-none focus:ring text-lg font-bold" />
+		<button
+			class="bg-sky-500 hover:bg-sky-600 p-5 rounded-xl text-white font-bold focus:outline-none ring-blue-900 focus:ring-4"
+			type="submit">
+			add todo
+		</button>
+	</form>
 </div>
