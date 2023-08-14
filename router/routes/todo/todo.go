@@ -1,8 +1,10 @@
 package todo_handler
 
 import (
+	"bytes"
 	"html/template"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 
@@ -35,4 +37,31 @@ func CreateTodoHandler(ctx *gin.Context) {
 	cwd, _ := os.Getwd()
 	tmpl := template.Must(template.ParseFiles(filepath.Join(cwd, "./views/todo.tmpl")))
 	tmpl.ExecuteTemplate(ctx.Writer, "todo_element", newTodo)
+}
+
+func ToggleTodoHandler(ctx *gin.Context) {
+	todoId := ctx.Param("id")
+	var dbTodo todo.Todo
+
+	res := models.DB.Model(&todo.Todo{}).Where("id = ?", todoId).First(&dbTodo)
+	if res.Error != nil {
+		log.Fatalf("ERROR: no todo found with that id: %v", res.Error)
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "todo not found with that id",
+		})
+	}
+
+	dbTodo.IsComplete = !dbTodo.IsComplete
+	models.DB.Save(&dbTodo)
+
+	cwd, _ := os.Getwd()
+	tmpl := template.Must(template.ParseFiles(filepath.Join(cwd, "./views/todo.tmpl")))
+	newTodoHTML := renderTodoHTML(tmpl, "todo_element", dbTodo) // Render the new todo item HTML
+	ctx.String(http.StatusOK, newTodoHTML)
+}
+
+func renderTodoHTML(tmpl *template.Template, tmplName string, todo todo.Todo) string {
+	var tplBuffer bytes.Buffer
+	tmpl.ExecuteTemplate(&tplBuffer, tmplName, todo)
+	return tplBuffer.String()
 }

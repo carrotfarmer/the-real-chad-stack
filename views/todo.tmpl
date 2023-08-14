@@ -2,7 +2,7 @@
 	the todo list
 </h2>
 
-<div class="pt-5 flex justify-center gap-5">
+<div class="pt-5 flex justify-center">
 	<form hx-post="/todo/create" hx-target="#todo_list" hx-swap="beforeend" _="on submit target.reset()">
 		<input placeholder="become a chad"
 			class="p-5 rounded-xl w-96 bg-gray-700 text-white ring-sky-500 focus:ring-1 focus:outline-none focus:ring text-lg font-bold"
@@ -15,12 +15,21 @@
 	</form>
 </div>
 
-<div class="pt-5 text-white flex justify-center">
+<div class="pt-5 text-white flex justify-center pl-40">
 	<ul id="todo_list">
 		{{ range . }}
 		{{ block "todo_element" . }}
-		<li>
-			<p class="font-extrabold text-white text-xl">{{ .Text }}</p>
+		<li class="grid grid-cols-2 gap-40 pt-5" data-id="{{ .ID }}">
+			<span class="flex flex-row gap-5">
+				<input type="checkbox"
+					class="pr-2 w-6 h-6 rounded-md shadow border border-gray-500 ring-sky-500 outline-none focus:outline-none focus:ring-1 checked:bg-blue-500"
+					{{if .IsComplete}}checked{{end}} hx-patch="/todo/toggle/{{.ID}}" hx-target="li[data-id='{{ .ID }}']"
+					hx-swap="outerHTML" />
+				<p class="font-extrabold text-white text-xl {{if .IsComplete}}line-through{{end}}">
+					{{ .Text}}
+				</p>
+			</span>
+			delete
 		</li>
 		{{ end }}
 		{{ end }}

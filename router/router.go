@@ -39,7 +39,7 @@ func New(auth *auth.Authenticator) *gin.Engine {
 		router.GET("/todo")
 		router.GET("/todo/:id")
 		router.POST("/todo/create", todo_handler.CreateTodoHandler)
-		router.PATCH("/todo/toggle")
+		router.PATCH("/todo/toggle/:id", todo_handler.ToggleTodoHandler)
 	}
 
 	return router
