@@ -15,7 +15,7 @@
 		TheChadWebApp
 	</h1>
 	<div>
-		{{ if eq .email nil }}
+		{{ if eq .Email nil }}
 		<p class="flex justify-center pt-5 font-bold text-white">
 			you gotta sign in dawg
 		</p>
@@ -25,7 +25,7 @@
 		</div>
 		{{ else }}
 		<div class="flex justify-center text-white pt-5">
-			logged in as: {{ .email }}
+			logged in as: {{ .Email }}
 		</div>
 
 		<div class="flex justify-center pt-3">
@@ -33,6 +33,10 @@
 				id="btn-logout">
 				log out
 			</a>
+		</div>
+
+		<div class="pt-5">
+			{{template "todo.tmpl" .Todos }}
 		</div>
 		{{ end }}
 	</div>

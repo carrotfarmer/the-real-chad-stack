@@ -2,7 +2,6 @@ package router
 
 import (
 	"encoding/gob"
-	"net/http"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -14,6 +13,7 @@ import (
 	"carrotfarmer/chad-stack/router/routes/login"
 	"carrotfarmer/chad-stack/router/routes/logout"
 	"carrotfarmer/chad-stack/router/routes/profile"
+	"carrotfarmer/chad-stack/router/routes/root"
 )
 
 func New(auth *auth.Authenticator) *gin.Engine {
@@ -27,12 +27,7 @@ func New(auth *auth.Authenticator) *gin.Engine {
 	router.Static("/public", "web/static")
 	router.LoadHTMLGlob("./views/*.tmpl")
 
-	router.GET("/", func(ctx *gin.Context) {
-		profile := sessions.Default(ctx).Get("profile")
-
-		ctx.HTML(http.StatusOK, "index.tmpl", profile)
-	})
-
+	router.GET("/", root.Handler)
 	router.GET("/login", login.Handler(auth))
 	router.GET("/callback", callback.Handler(auth))
 	router.GET("/profile", middleware.IsAuthenticated, profile.Handler)
