@@ -1,9 +1,6 @@
 package todo_handler
 
 import (
-	"carrotfarmer/chad-stack/models"
-	"carrotfarmer/chad-stack/models/todo"
-	"carrotfarmer/chad-stack/models/user"
 	"html/template"
 	"log"
 	"os"
@@ -11,6 +8,10 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+
+	"carrotfarmer/chad-stack/models"
+	"carrotfarmer/chad-stack/models/todo"
+	"carrotfarmer/chad-stack/models/user"
 )
 
 func CreateTodoHandler(ctx *gin.Context) {
