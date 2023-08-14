@@ -13,7 +13,6 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() {
-
 	database, err := gorm.Open(sqlite.Open("deez_nuts.db"), &gorm.Config{})
 
 	if err != nil {

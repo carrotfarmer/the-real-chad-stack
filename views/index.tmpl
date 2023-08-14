@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset='UTF-8'>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>TheChadWebApp</title>
+	<script src="https://unpkg.com/htmx.org@1.9.4"></script>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="/public/js/user.js"></script>
+	<script src="/public/js/js.cookie.js"></script>
+</head>
+
+<body class="bg-gray-900">
+	<h1 class="flex justify-center text-4xl pt-5 font-extrabold text-white">
+		TheChadWebApp
+	</h1>
+	<div>
+		{{ if eq .email nil }}
+		<p class="flex justify-center pt-5 font-bold text-white">
+			you gotta sign in dawg
+		</p>
+		<div class="flex justify-center pt-3">
+			<a href="/login" class="p-3 flex justify-center bg-white text-black hover:bg-gray-300 rounded-xl w-48">sign in
+				with github</a>
+		</div>
+		{{ else }}
+		<div class="flex justify-center text-white pt-5">
+			logged in as: {{ .email }}
+		</div>
+
+		<div class="flex justify-center pt-3">
+			<a href="/logout" class="p-3 flex justify-center bg-white text-black hover:bg-gray-300 rounded-xl w-48 btn-logout"
+				id="btn-logout">
+				log out
+			</a>
+		</div>
+		{{ end }}
+	</div>
+</body>

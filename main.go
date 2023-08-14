@@ -8,6 +8,7 @@ import (
 
 	"carrotfarmer/chad-stack/auth"
 	"carrotfarmer/chad-stack/models"
+	"carrotfarmer/chad-stack/models/user"
 	"carrotfarmer/chad-stack/router"
 )
 
@@ -17,6 +18,9 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("failed to load the env vars: %v", err)
 	}
+
+	var users []user.User
+	models.DB.Find(&users)
 
 	auth, err := auth.New()
 	if err != nil {
