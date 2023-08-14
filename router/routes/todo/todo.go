@@ -56,8 +56,23 @@ func ToggleTodoHandler(ctx *gin.Context) {
 
 	cwd, _ := os.Getwd()
 	tmpl := template.Must(template.ParseFiles(filepath.Join(cwd, "./views/todo.tmpl")))
-	newTodoHTML := renderTodoHTML(tmpl, "todo_element", dbTodo) // Render the new todo item HTML
+	newTodoHTML := renderTodoHTML(tmpl, "todo_element", dbTodo)
 	ctx.String(http.StatusOK, newTodoHTML)
+}
+
+func DeleteTodoHandler(ctx *gin.Context) {
+	log.Printf("DELETE HANDLER IS CALLLED DAWG")
+
+	todoId := ctx.Param("id")
+	var dbTodo todo.Todo
+
+	res := models.DB.Model(&todo.Todo{}).Where("id = ?", todoId).Delete(&dbTodo)
+	if res.Error != nil {
+		log.Fatalf("ERROR: no todo found with that id: %v", res.Error)
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "todo not found with that id",
+		})
+	}
 }
 
 func renderTodoHTML(tmpl *template.Template, tmplName string, todo todo.Todo) string {
