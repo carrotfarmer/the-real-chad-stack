@@ -4,7 +4,10 @@ import (
 	"carrotfarmer/chad-stack/models"
 	"carrotfarmer/chad-stack/models/todo"
 	"carrotfarmer/chad-stack/models/user"
+	"html/template"
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -27,4 +30,8 @@ func CreateTodoHandler(ctx *gin.Context) {
 	if err := models.DB.Create(&newTodo).Error; err != nil {
 		log.Fatalf("ERROR: could not create todo: %v", err)
 	}
+
+	cwd, _ := os.Getwd()
+	tmpl := template.Must(template.ParseFiles(filepath.Join(cwd, "./views/todo.tmpl")))
+	tmpl.ExecuteTemplate(ctx.Writer, "todo_element", newTodo)
 }

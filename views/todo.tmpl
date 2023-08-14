@@ -3,7 +3,7 @@
 </h2>
 
 <div class="pt-5 flex justify-center gap-5">
-	<form hx-post="/todo/create">
+	<form hx-post="/todo/create" hx-target="#todo_list" hx-swap="beforeend">
 		<input placeholder="become a chad"
 			class="p-5 rounded-xl w-96 bg-gray-700 text-white ring-sky-500 focus:ring-1 focus:outline-none focus:ring text-lg font-bold"
 			name="todo_text" />
@@ -16,9 +16,13 @@
 </div>
 
 <div class="pt-5 text-white flex justify-center">
-	{{range .}}
-	<p class="pt-2">
-		{{.Text}}
-	</p>
-	{{end}}
+	<ul id="todo_list">
+		{{ range . }}
+		{{ block "todo_element" . }}
+		<li>
+			<p class="font-extrabold text-white text-xl">{{ .Text }}</p>
+		</li>
+		{{ end }}
+		{{ end }}
+	</ul>
 </div>
