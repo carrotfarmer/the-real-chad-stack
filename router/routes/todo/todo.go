@@ -61,8 +61,6 @@ func ToggleTodoHandler(ctx *gin.Context) {
 }
 
 func DeleteTodoHandler(ctx *gin.Context) {
-	log.Printf("DELETE HANDLER IS CALLLED DAWG")
-
 	todoId := ctx.Param("id")
 	var dbTodo todo.Todo
 
